@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const solutionRadios = document.getElementsByName('solution');
     const submitProblemButton = document.getElementById('submit-problem');
 
-
+// nieuw toegevoegd na Thomas 
     // Page selector 
      // Event listeners voor de pagina selector knoppen
      const navButtons = document.querySelectorAll('.nav-button');
@@ -61,6 +61,101 @@ document.addEventListener('DOMContentLoaded', function () {
              navigateToSection(targetSection);
          });
      });
+
+
+         // Selecteer alle terug- en uitlogknoppen
+    const backButtons = document.querySelectorAll('.back-button');
+    const logoutButtons = document.querySelectorAll('.logout-button');
+    
+    // Event listeners voor alle terugknoppen
+    backButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const currentSection = document.querySelector('.section:not(.hidden)');
+            if (currentSection) {
+                switch (currentSection.id) {
+                    case 'welcome-section':
+                        navigateToSection('login-section');
+                        break;
+                    case 'machine-selection-section':
+                        navigateToSection('welcome-section');
+                        break;
+                    case 'report-problem-section':
+                        navigateToSection('welcome-section');
+                        break;
+                    case 'form-section':
+                        navigateToSection('machine-selection-section');
+                        break;
+                    case 'confirmation-section':
+                        navigateToSection('welcome-section');
+                        break;
+                    default:
+                        navigateToSection('welcome-section');
+                }
+            }
+        });
+    });
+
+    // Event listeners voor alle uitlogknoppen
+    logoutButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const shouldLogout = confirm('Weet u zeker dat u wilt uitloggen?');
+            if (shouldLogout) {
+                // Reset alle formulierdata
+                const forms = document.querySelectorAll('form');
+                forms.forEach(form => form.reset());
+                
+                // Reset gebruikersgegevens
+                loggedInUser = null;
+                document.getElementById('welcome-user').textContent = '';
+                document.getElementById('user-display').textContent = '';
+                
+                // Verwijder eventuele error messages
+                const errorMessage = document.getElementById('error-message');
+                if (errorMessage) {
+                    errorMessage.style.display = 'none';
+                }
+                
+                // Ga terug naar login pagina
+                navigateToSection('login-section');
+                
+                // Clear storage
+                localStorage.clear();
+                sessionStorage.clear();
+            }
+        });
+    });
+
+    // Update de zichtbaarheid van de knoppen bij sectie wissel
+    function updateButtonVisibility(sectionId) {
+        // Verberg eerst alle navigatieknoppen
+        document.querySelectorAll('.back-button, .logout-button').forEach(button => {
+            button.style.display = 'none';
+        });
+
+        // Toon de juiste knoppen gebaseerd op de huidige sectie
+        const currentSection = document.getElementById(sectionId);
+        if (currentSection) {
+            const navButtons = currentSection.querySelectorAll('.back-button, .logout-button');
+            navButtons.forEach(button => {
+                button.style.display = 'block';
+            });
+        }
+    }
+
+    // Voeg de updateButtonVisibility toe aan je bestaande navigateToSection functie
+    const originalNavigateToSection = navigateToSection;
+    navigateToSection = function(sectionId) {
+        originalNavigateToSection(sectionId);
+        updateButtonVisibility(sectionId);
+    };
+
+
+
+    //nieuw toegevoegd hierboven!!!
+
+
+
+    
     // Hulpfuncties
     function getLoggedInUsername() {
         return loggedInUser;
