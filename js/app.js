@@ -150,12 +150,24 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
 
-
-    //nieuw toegevoegd hierboven!!!
-
-
-
+    //Helpers voor loading
+    function showLoading(message = 'Formulier wordt verzonden...') {
+        const loadingText = document.querySelector('.loading-text');
+        if (loadingText) {
+            loadingText.textContent = message;
+        }
+        document.getElementById('loadingOverlay').style.display = 'flex';
+    }
     
+    function hideLoading() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    //nieuw toegevoegd hierboven! Thomas!!
+
+
+
+
     // Hulpfuncties
     function getLoggedInUsername() {
         return loggedInUser;
@@ -431,12 +443,16 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log("Uitgelogd en terug naar inlogpagina");
     });
 
-    submitQualityControlButton.addEventListener('click', async function (e) {
-        e.preventDefault();
+   // Je kwaliteitscontrole submit handler
+submitQualityControlButton.addEventListener('click', async function (e) {
+    e.preventDefault();
 
-        if (!validateQualityControlForm()) {
-            return;
-        }
+    if (!validateQualityControlForm()) {
+        return;
+    }
+
+    try {
+        showLoading('Kwaliteitscontrole wordt verwerkt...');
 
         const formData = {
             formType: 'kwaliteitscontrole',
@@ -450,12 +466,25 @@ document.addEventListener('DOMContentLoaded', function () {
             opmerkingen: commentsInput.value,
             voldoetAanEisen: resultSelect.value,
             palletGoed: palletGoodCheckbox.checked,
-            etiketGoed: labelGoodCheckbox.checked,
+            etiketGood: labelGoodCheckbox.checked,
             stickerOpOctobin: octobinStickerCheckbox.checked
         };
 
+        // Simuleer een korte vertraging voor UX
+        await new Promise(resolve => setTimeout(resolve, 1500));
+
         await sendFormData(formData);
-    });
+        
+        hideLoading();
+        navigateToSection('confirmation-section');
+
+    } catch (error) {
+        hideLoading();
+        console.error("Fout bij het verzenden van het formulier:", error);
+        alert(`Er is een fout opgetreden: ${error.message}`);
+    }
+}); // Einde van submitQualityControlButton event listener
+
 
     submitProblemButton.addEventListener('click', async function (e) {
         e.preventDefault();
@@ -471,6 +500,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         try {
+
+            //na de thomas aanpassingen 
+            showLoading('Probleem wordt gemeld...');
+
             const formData = {
                 formType: 'probleem',
                 datumEnTijd: new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' }),
@@ -495,8 +528,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 formData.oplossingOpmerkingen = solutionComment;
             }
+            // Na thomas toegevoegd Simuleer een korte vertraging voor UX
+        await new Promise(resolve => setTimeout(resolve, 1500));
 
             await sendFormData(formData);
+
+            //toegevoegd na thomas 
+            // Navigeer naar de bevestigingspagina
+            hideLoading();
+        navigateToSection('confirmation-section');
+
+        //hierboven toegevoegd na Thomas
 
         } catch (error) {
             console.error("Fout bij het verwerken van het formulier:", error);
