@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kwaliteitscontrole App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- KVH Logo -->
+    <div class="kvh-logo-style">
+        <img src="assets/kvh-logo.png" alt="KVH Logo" class="kvh-logo">
+    </div>
+
+    <div id="app">
+
+        <div id="sidebar">
+            <h3>Pagina Selector</h3>
+            <button class="nav-button" data-section="login-section">Login Pagina</button>
+            <button class="nav-button" data-section="welcome-section">Welkom Pagina</button>
+            <button class="nav-button" data-section="machine-selection-section">Machine Selectie</button>
+            <button class="nav-button" data-section="report-problem-section">Probleem Melden</button>
+            <button class="nav-button" data-section="form-section">Kwaliteitscontrole Formulier</button>
+            <button class="nav-button" data-section="confirmation-section">Bevestigingspagina</button>
+        </div>
+
+        <!-- Inlogscherm (Pagina 1) -->
+        <div id="login-section" class="section active">
+            <h1>Inloggen</h1>
+            <div id="pin-input-wrapper">
+                <!-- Invoerveld aangepast voor minimaal 4 en maximaal 8 cijfers -->
+                <input type="tel" id="pin" placeholder="Voer pincode in" maxlength="8" inputmode="numeric" aria-label="Pincode Invoer">
+                <button id="backspace-button" aria-label="Verwijder Laatste Cijfer">
+                    <img src="https://img.icons8.com/ios-glyphs/30/000000/backspace.png" alt="Backspace">
+                </button>
+            </div>
+            <button id="submit-code" aria-label="Bevestig pincode">Bevestigen</button>
+            <p id="error-message" class="error-message" aria-live="polite" style="display: none;">Onjuiste code. Probeer het opnieuw.</p>
+        </div>
+
+        <!-- Welkom Pagina (Pagina 2) -->
+        <div id="welcome-section" class="section hidden">
+            <h2>Welkom, <span id="welcome-user"></span>!</h2>
+            <p>Maak een keuze:</p>
+            <button id="report-problem-button" aria-label="Probleem melden verpakking">Probleem Melden Verpakking</button>
+            <button id="continue-to-machines-button" aria-label="Doorgaan naar machine selectie">Doorgaan naar Machine Selectie</button>
+
+            <div><button id="logout-button" class="logout-button" style="display: block;">Uitloggen</button></div>
+
+        </div>
+
+        <!-- Machine Selectie Pagina (Pagina 3) -->
+        <div id="machine-selection-section" class="section hidden">
+            <div id="user-display" class="username-display" aria-live="polite"></div> <!-- Gebruiker wordt hier weergegeven -->
+            <h2>Selecteer een Machine</h2>
+            <div class="machine-grid">
+                <!-- 15 machines zoals gewenst -->
+                <button class="machine-button" data-machine="Machine 1" aria-label="Machine 1">Machine 1</button>
+                <button class="machine-button" data-machine="Machine 2" aria-label="Machine 2">Machine 2</button>
+                <button class="machine-button" data-machine="Machine 3" aria-label="Machine 3">Machine 3</button>
+                <button class="machine-button" data-machine="Machine 4" aria-label="Machine 4">Machine 4</button>
+                <button class="machine-button" data-machine="Machine 5" aria-label="Machine 5">Machine 5</button>
+                <button class="machine-button" data-machine="Machine 6" aria-label="Machine 6">Machine 6</button>
+                <button class="machine-button" data-machine="Machine 7" aria-label="Machine 7">Machine 7</button>
+                <button class="machine-button" data-machine="Machine 8" aria-label="Machine 8">Machine 8</button>
+                <button class="machine-button" data-machine="Machine 9" aria-label="Machine 9">Machine 9</button>
+                <button class="machine-button" data-machine="Machine 10" aria-label="Machine 10">Machine 10</button>
+                <button class="machine-button" data-machine="Machine 11" aria-label="Machine 11">Machine 11</button>
+                <button class="machine-button" data-machine="Machine 12" aria-label="Machine 12">Machine 12</button>
+                <button class="machine-button" data-machine="Machine 13" aria-label="Machine 13">Machine 13</button>
+                <button class="machine-button" data-machine="Machine 14" aria-label="Machine 14">Machine 14</button>
+                <button class="machine-button" data-machine="Machine 15" aria-label="Machine 15">Machine 15</button>
+            </div>
+            <div class="navigation-buttons">
+                <button class="back-button" aria-label="Ga terug">Terug</button>
+                <button class="logout-button" aria-label="Uitloggen">Uitloggen</button>
+            </div>
+        </div>
+
+        <!-- Probleem Melden Pagina (Pagina 4) -->
+        <div id="report-problem-section" class="section hidden">
+            <h2>Probleem Melden</h2>
+            <form id="problem-form">
+
+                <!-- Datum en tijd veld, automatisch ingevuld -->
+                <div class="form-element">
+                    <label for="date-time">Datum en Tijd:</label>
+                    <input type="text" id="date-time" readonly>
+                </div>
+                <!-- Productcode -->
+                <div class="form-element">
+                    <label for="product-code">Productcode:</label>
+                    <input type="text" id="product-code" placeholder="Vul productcode in" required' name="productcode">
+                </div>
+                <!-- Foto upload -->
+                <div class="form-element">
+                    <label for="product-photo">Foto upload (meerdere foto's toegestaan):</label>
+                    <input type="file" id="product-photo" accept="image/*" multiple required>
+                </div>
+                <!-- Argumentatie -->
+                <div class="form-element">
+                    <label for="argumentation">Argumentatie:</label>
+                    <textarea id="argumentation" placeholder="Voer argumentatie in" minlength="1" required></textarea>
+                </div>
+                <!-- Oplossing gevonden? -->
+                <div class="form-element">
+                    <label>Oplossing gevonden?</label>
+                    <label><input type="radio" name="solution" value="yes" required> Ja</label>
+                    <label><input type="radio" name="solution" value="no" required> Nee</label>
+                </div>
+                <!-- Verzendknop -->
+                <button type="button" id="submit-problem" aria-label="Verzend het probleem">Verzenden</button>
+
+            </form>
+            <div class="navigation-buttons">
+                <button class="back-button" aria-label="Ga terug">Terug</button>
+                <button class="logout-button" aria-label="Uitloggen">Uitloggen</button>
+            </div>
+
+            <!--submissie -->
+            <div id="submission-confirmation" class="section hidden">
+                <h2>Bevestiging</h2>
+                <p>Uw probleemrapport is succesvol verzonden.</p>
+                <button class="back-button" onclick="navigateToSection('welcome-section')">Terug naar keuzescherm</button>
+                <button class="logout-button" aria-label="Uitloggen">Uitloggen</button>
+            </div>
+
+        </div>
+
+        <!-- Kwaliteitscontrole Formulier Pagina (Pagina 5) -->
+        <div id="form-section" class="section hidden">
+            <div class="form-wrapper">
+                <h2>Kwaliteitscontrole Formulier</h2>
+                <p>Geselecteerde Machine: <span id="machine-name"></span></p>
+                <p>Unieke Code: <span id="unique-code"></span></p>
+                <div class="form-grid">
+
+                    <!-- Datum en tijd veld, automatisch ingevuld -->
+                    <div class="form-element">
+                        <label for="date-time">Datum en Tijd:</label>
+                        <input type="text" id="date-time" readonly>
+                    </div>
+                    <!-- Medewerker naam invoerveld -->
+                    <div class="form-element">
+                        <label for="employee-name">Welke medewerker staat aan de machine?</label>
+                        <input type="text" id="employee-name" placeholder="Voer naam van de medewerker in">
+                    </div>
+                    <!--productnummer of foto-->
+                    <div class="form-element">
+                        <label for="product-number">Productnummer of Foto:</label>
+                        <input type="text" id="product-number" placeholder="Vul productnummer in">
+                    </div>
+
+
+
+                    <!-- Productgewicht opgesplitst in huidige gewicht en controle gewicht -->
+                    <div class="form-element">
+                        <label for="current-weight">Huidige Gewicht (in gram):</label>
+                        <input type="text" id="current-weight" placeholder="Voer huidige gewicht in, bijv. 12,5">
+                        <p id="current-weight-error" class="error-message" style="display: none;">Gebruik alleen cijfers en één komma.</p>
+                    </div>
+                    <div class="form-element">
+                        <label for="control-weight">Controle Gewicht (in gram):</label>
+                        <input type="text" id="control-weight" placeholder="Voer controle gewicht in, bijv. 12,5">
+                        <p id="control-weight-error" class="error-message" style="display: none;">Gebruik alleen cijfers en één komma.</p>
+                    </div>
+
+                    <div class="form-element">
+                        <label for="comments">Opmerkingen:</label>
+                        <textarea id="comments" placeholder="Voeg opmerkingen toe"></textarea>
+                    </div>
+
+                    <div class="form-element">
+                        <label for="product-photo">Of maak een foto als dat nodig is:</label>
+                        <input type="file" id="product-photo" accept="image/*" capture="camera" aria-label="Maak een foto">
+                    </div>
+
+                    <!-- Voldoet het product aan de eisen met Ja/Nee knoppen -->
+                    <div class="form-element">
+                        <label>Voldoet het product aan de eisen?</label>
+                        <select id="result" aria-label="Selecteer of het product voldoet aan de eisen">
+                            <option value="ja">Ja</option>
+                            <option value="nee">Nee</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Extra checkboxes voor controle -->
+                <div class="form-element">
+                    <label>Extra controles:</label>
+                    <div>
+                        <input type="checkbox" id="pallet-good" name="pallet-good">
+                        <label for="pallet-good">Pallet goed?</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="label-good" name="label-good">
+                        <label for="label-good">Etiket goed?</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="octobin-sticker" name="octobin-sticker">
+                        <label for="octobin-sticker">Sticker op octobin?</label>
+                    </div>
+                </div>
+
+                <div class="form-element">
+                    <button type="button" id="submit-quality-control">Verstuur Kwaliteitscontrole</button>
+                    <button id="back-button" class="back-button" aria-label="Ga terug naar Hoofdpagina">Terug naar Hoofdpagina</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Functie om de gekozen waarde voor productkwaliteit op te slaan
+        let result = '';
+
+        function setResult(value) {
+            result = value;
+            console.log("Voldoet aan de eisen:", result);
+        }
+
+        // Functie om de huidige datum en tijd automatisch in te vullen
+        function setDateTime() {
+            const dateTimeFields = document.querySelectorAll('#date-time');
+            const now = new Date();
+            const formattedDate = now.toLocaleDateString('nl-NL', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric'
+            });
+            const formattedTime = now.toLocaleTimeString('nl-NL', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+            dateTimeFields.forEach(field => {
+                field.value = `${formattedDate} ${formattedTime}`;
+            });
+        }
+
+        // Roep setDateTime aan wanneer de pagina geladen wordt
+        document.addEventListener('DOMContentLoaded', setDateTime);
+    </script>
+    </div>
+    </div>
+    </div>
+
+    <!-- Bevestigingspagina na versturen (Pagina 6) -->
+    <div id="confirmation-section" class="section hidden">
+        <h2>Super! Uw formulier is verzonden.</h2>
+        <button class="back-button" onclick="navigateToSection('welcome-section')">Terug naar keuzescherm</button>
+        <button class="logout-button" aria-label="Uitloggen">Uitloggen</button>
+    </div>
+
+    <!-- Terug naar Inloggen Sectie -->
+    <div id="back-to-login-section" class="section hidden">
+        <h2>U bent succesvol uitgelogd!</h2>
+        <button id="back-to-login" aria-label="Terug naar Inloggen">Terug naar Inloggen</button>
+    </div>
+
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+
+</html>
