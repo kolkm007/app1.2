@@ -35,6 +35,32 @@ document.addEventListener('DOMContentLoaded', function () {
     const solutionRadios = document.getElementsByName('solution');
     const submitProblemButton = document.getElementById('submit-problem');
 
+
+    // Page selector 
+     // Event listeners voor de pagina selector knoppen
+     const navButtons = document.querySelectorAll('.nav-button');
+    
+     navButtons.forEach(button => {
+         button.addEventListener('click', function() {
+             const targetSection = this.getAttribute('data-section');
+             
+             // Controleer of gebruiker is ingelogd voor bepaalde secties
+             if (!loggedInUser && 
+                 ['welcome-section', 'machine-selection-section', 
+                  'report-problem-section', 'form-section'].includes(targetSection)) {
+                 alert('U moet eerst inloggen om deze pagina te bekijken.');
+                 navigateToSection('login-section');
+                 return;
+             }
+             
+             // Update actieve status van knoppen
+             navButtons.forEach(btn => btn.classList.remove('active'));
+             this.classList.add('active');
+             
+             // Navigeer naar de geselecteerde sectie
+             navigateToSection(targetSection);
+         });
+     });
     // Hulpfuncties
     function getLoggedInUsername() {
         return loggedInUser;
