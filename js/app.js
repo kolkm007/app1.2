@@ -4,8 +4,22 @@ document.addEventListener('DOMContentLoaded', function () {
         '6666': 'Bart',
         '3333': 'Goisa',
         '5555': 'Technische Dienst',
-        '7777': 'Kantoor'
+        '7777': 'Kantoor',
+        'K1999': 'Admin'
+
     };
+// ➕ NIEUW: Voeg deze nieuwe functie toe na Thomas
+function isAdmin() {
+    return loggedInUser === 'Admin';
+}
+
+// ➕ NIEUW: Voeg deze nieuwe functie toe na Thomas
+function updateSidebarVisibility() {
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.style.display = isAdmin() ? 'block' : 'none';
+    }
+}
 
     let pinValue = '';
     let loggedInUser = null;
@@ -202,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
             targetSection.classList.add('active');
             console.log(`Succesvol genavigeerd naar sectie: ${sectionId}`);
             updateButtons(sectionId);
+            updateSidebarVisibility();//na thomas toegevoegd
         } else {
             console.error(`Sectie met ID '${sectionId}' niet gevonden`);
             alert(`Fout: De sectie '${sectionId}' bestaat niet.`);
@@ -272,6 +287,7 @@ document.addEventListener('DOMContentLoaded', function () {
         resetApp();
         localStorage.clear();
         sessionStorage.clear();
+        updateSidebarVisibility(); //toegevoegd na Thomas
         console.log("Uitgelogd, formuliergegevens gewist, en terug naar inlogpagina");
     }
 
@@ -369,7 +385,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
             console.log("Formulier succesvol verzonden");
-            alert("Formulier succesvol verzonden naar Google Sheet");
+            alert("Formulier succesvol verzonden!");
             navigateToSection('confirmation-section');
 
         } catch (error) {
@@ -406,6 +422,7 @@ document.addEventListener('DOMContentLoaded', function () {
             loggedInUser = correctCodes[pinValue];
             welcomeUser.textContent = loggedInUser;
             navigateToSection('welcome-section');
+            updateSidebarVisibility();//na thomas toegevoegd
             pinInput.value = '';
         } else {
             showError("Ongeldige code. Voer een geldige pincode in (4-8 cijfers).");
@@ -506,7 +523,7 @@ submitQualityControlButton.addEventListener('click', async function (e) {
 
             const formData = {
                 formType: 'probleem',
-                datumEnTijd: new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam' }),
+                datumEnTijd: dateTimeInput.value,
                 gebruikersnaam: loggedInUser,
                 productcode: productCodeInput.value.trim(),
                 argumentatie: argumentationInput.value.trim()
